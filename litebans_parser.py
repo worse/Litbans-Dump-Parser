@@ -1,0 +1,51 @@
+# Simple parser I made because there's so many dbs with this disgusting format
+# Definitely could have done this way better but I wanted to do it with a queue system
+
+from queue import Queue
+from time import time
+from joblib import Parallel, delayed
+
+to_parse = "faithfulmc.txt"
+parsed_file = f"{to_parse}_parsed.txt"
+
+parse_queue = Queue()
+
+
+def load_queue():
+    start = time()
+
+    with open(to_parse) as f:
+        content = f.readlines()
+        content = [x.strip() for x in content]
+
+        [parse_queue.put(non_parsed) for non_parsed in content]
+
+    end = time()
+    print(f"[DONE] Finished adding {parse_queue.qsize()} entries to queue in {format(end - start, str(.2))} seconds!")
+
+
+def parse():
+    start = time()
+
+    while parse_queue.qsize() > 0:
+        line = parse_queue.get()
+        line_splitter = line.split("|", 6)
+
+        if line.startswith("+"):
+            continue
+
+        elif len(line_splitter) > 1:
+            username, uuid, ip = line_splitter[3].strip(), line_splitter[4], line_splitter[5]
+            print(f"{uuid},{username},{ip}")
+            open(parsed_file, "a").write(f"{uuid},{username},{ip}\n")
+            continue
+
+        parse_queue.task_done()
+
+    end = time()
+    print(f"[DONE] Finished parsing in {format(end - start, str(.2))} seconds!")
+
+
+if __name__ == "__main__":
+    load_queue()
+    parse()
