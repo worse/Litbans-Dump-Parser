@@ -3,7 +3,6 @@
 
 from queue import Queue
 from time import time
-from joblib import Parallel, delayed
 
 to_parse = "faithfulmc.txt"
 parsed_file = f"{to_parse}_parsed.txt"
