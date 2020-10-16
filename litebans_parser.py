@@ -38,7 +38,7 @@ def parse():
 
         # Skip lines with less than 1 character
         elif len(line_splitter) > 1:
-            username, uuid, ip = line_splitter[3].strip(), line_splitter[4], line_splitter[5]
+            username, uuid, ip = line_splitter[3].strip(), line_splitter[4].strip(), line_splitter[5].strip()
             print(f"{uuid},{username},{ip}")
             open(parsed_file, "a").write(f"{uuid},{username},{ip}\n")
             continue
