@@ -3,6 +3,7 @@
 
 from queue import Queue
 from time import time
+from joblib import Parallel, delayed
 
 to_parse = "database.txt"
 parsed_file = f"{to_parse[:-4]}_parsed.txt"
@@ -52,4 +53,7 @@ def parse():
 
 if __name__ == "__main__":
     load_queue()
-    parse()
+
+    Parallel(n_jobs=500, backend="threading")(
+        delayed(parse())
+    )
