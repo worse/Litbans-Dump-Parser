@@ -4,8 +4,9 @@
 from queue import Queue
 from time import time
 from joblib import Parallel, delayed
+import datetime
 
-to_parse = "database.txt"
+to_parse = "faithfulmc.txt"
 parsed_file = f"{to_parse[:-4]}_parsed.txt"
 
 parse_queue = Queue()
@@ -48,7 +49,7 @@ def parse():
         parse_queue.task_done()
 
     end = time()
-    print(f"[DONE] Finished parsing in {format(end - start, str(.2))} seconds!")
+    print(f"[DONE] Finished parsing in {datetime.timedelta(seconds=(end - start))}")
 
 
 if __name__ == "__main__":
